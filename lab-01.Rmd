@@ -18,7 +18,7 @@ library(tidyverse)
 visitors <- read_csv("data/UK-visitor-numbers.csv")
 ```
 
-```{r show-first-10-rows}
+```{r warm-up-excerise}
 visitors %>% head(n = 10)
 ```
 
@@ -79,9 +79,9 @@ visitors %>% arrange(desc(n_2022))
 
 _What are the top 10 most visited attractions in 2021?_
 ```{r Ex_c}
-#visitors %>% 
-#  arrange(____(____)) %>%
-#  head(n = ____)
+visitors %>% 
+  arrange(desc(n_2021)) %>%
+  head(n = 10)
 ```
 
 ## Question 4
@@ -98,17 +98,17 @@ visitors %>% filter(attraction == "National Museum of Scotland")
 _Which attraction had exactly 565,772 visitors in 2022?_
 
 ```{r Ex_d}
-#visitors %>% filter(___ == ____)
+visitors %>% filter(n_2022 == 565772)
 ```
 
-### Exercise e.
+Exercise e.
 
 _How many attraction had more than 1 million visitors in 2022?_
 
 ```{r Ex_e}
-#visitors %>% 
-#  filter(____) %>%
-#  count()
+visitors %>% 
+  filter(n_2022 > 1000000) %>%
+  count()
 ```
 
 ## Question 5
@@ -131,11 +131,12 @@ visitors %>%
 _How many attractions had between 50,000 and 100,000 visitors in 2022?_
 
 ```{r Ex_f}
-#visitors %>% 
-#  ____(
-#    ______,
-#    ______ ) %>%
-#  count()
+visitors %>% 
+  filter(
+    n_2022 > 50000,
+    n_2022 < 100000
+    ) %>%
+  count()
 ```
 
 ### Exercise g.
@@ -143,9 +144,11 @@ _How many attractions had between 50,000 and 100,000 visitors in 2022?_
 _How many regions have more than 50 tourist attraction in the data set? (Hint: You will need to tabulate the data before filtering.)_
 
 ```{r Ex_g}
-#visitors %>% 
-#  _____(region) %>%
-#  filter(______)
+visitors %>% 
+  arrange(region) %>%
+  count(region) %>%
+  filter(n > 50) %>%
+  count()
 ```
 
 
@@ -170,11 +173,11 @@ visitors %>%
 _Perform the same calculation for the 2021 admissions data._
 
 ```{r Ex_h}
-#visitors %>% 
-#  ______(
-#    __________,
-#    __________
-#  )
+visitors %>% 
+  summarise(
+    mean_2021 = mean(n_2021),
+    med_2021 = median(n_2021)
+  )
 ```
 
 All values in the output are `NA`!
@@ -183,7 +186,7 @@ All values in the output are `NA`!
 
 _What does `NA` stand for and why are you getting this as your answer to the previous question._
 
-**Write your answer here**
+NA stands for not applicable and I an getting this error as some of the data in the n_2021 column are NA and as all the data is not numerical it cannot calculate a mean or median
 
 
 
@@ -192,7 +195,13 @@ _What does `NA` stand for and why are you getting this as your answer to the pre
 
 _Look at the help pages for the `mean()` and `median()` commands to see what the input argument `na.rm` does. Edit your code from exercise h so that it computes the summary statistics where data is available._
 
-**Write your answer here**
+```{r Ex_j}
+visitors %>% 
+  summarise(
+    mean_2021 = mean(n_2021, na.rm = TRUE),
+    med_2021 = median(n_2021, na.rm = TRUE)
+  )
+```
 
 
 
@@ -214,7 +223,7 @@ visitors %>%
 
 _Observe in question 6 that the mean statistics across all settings are much larger than the corresponding median statistics. Discuss in your group what this suggests about the data._
 
-**Write your answer here**
+As the data is skewed to the right which has a big impact on the mean, making it larger, but it has a much smaller impact on the median.
 
 
 
@@ -247,11 +256,12 @@ _How many tourist attractions are there in each of the 4 nations? From this, dis
 
 
 ```{r Ex_l}
-#________ %>%
-#  ______(_______)
+visitors_with_nations %>%
+  count(nation) %>%
+  filter()
 ```
 
-
+The inter-quartile range for England and Scotland are quite reliable as they have a large data set however, the inter-quartile range for Northern Ireland and Wales is not reliable as their data set is very small.
 
 # Challenging Exercises
 
